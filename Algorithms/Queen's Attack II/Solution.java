@@ -41,15 +41,15 @@ class Result {
         res += (oqcUpRowIndex-oqcDownRowIndex-2);
                         
         //for obstacles on queen's general diagonal (OQGD)
-        List<List<Integer>> oqgd = obstacles.stream().filter(a -> (c_q-a.get(1))==(r_q-a.get(0))).collect(Collectors.toList());
-        int oqgdLeftColumnIndex = oqgd.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(c_q-Math.min(c_q-1, r_q-1)-1);
-        int oqgdRightColumnIndex = oqgd.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(c_q+Math.min(n-c_q, n-r_q)+1);
+        List<List<Integer>> obstaclesOnQueensGeneralDiagonal = obstacles.stream().filter(a -> (c_q-a.get(1))==(r_q-a.get(0))).collect(Collectors.toList());
+        int oqgdLeftColumnIndex = obstaclesOnQueensGeneralDiagonal.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(c_q-Math.min(c_q-1, r_q-1)-1);
+        int oqgdRightColumnIndex = obstaclesOnQueensGeneralDiagonal.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(c_q+Math.min(n-c_q, n-r_q)+1);
         res += (oqgdRightColumnIndex-oqgdLeftColumnIndex-2);
         
         //for obstacles on queen's other diagonal (OQOD)
-        List<List<Integer>> oqod = obstacles.stream().filter(a -> (c_q-a.get(1))==(-(r_q-a.get(0)))).collect(Collectors.toList());
-        int oqodLeftColumnIndex = oqod.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(c_q-Math.min(c_q-1, n-r_q)-1);
-        int oqodRightColumnIndex = oqod.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(c_q+Math.min(r_q-1, n-c_q)+1);
+        List<List<Integer>> obstaclesOnQueensOtherDiagonal = obstacles.stream().filter(a -> (c_q-a.get(1))==(-(r_q-a.get(0)))).collect(Collectors.toList());
+        int oqodLeftColumnIndex = obstaclesOnQueensOtherDiagonal.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(c_q-Math.min(c_q-1, n-r_q)-1);
+        int oqodRightColumnIndex = obstaclesOnQueensOtherDiagonal.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(c_q+Math.min(r_q-1, n-c_q)+1);
         res += (oqodRightColumnIndex-oqodLeftColumnIndex-2);
         
         return res;
