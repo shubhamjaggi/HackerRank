@@ -28,32 +28,29 @@ class Result {
     // Write your code here
         int res = 0;
         
-        //for obstacles on queen's row        
-        List<List<Integer>> oqr = obstacles.stream().filter(a -> a.get(0)==r_q).collect(Collectors.toList());
-        int oqrcl = oqr.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(0);
-        int oqrcr = oqr.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(n+1);
-        res += (oqrcr-oqrcl-2);
+        //for obstacles on queen's row (OQR)
+        List<List<Integer>> obstaclesOnQueensRow = obstacles.stream().filter(a -> a.get(0)==r_q).collect(Collectors.toList());
+        int oqrLeftColumnIndex = obstaclesOnQueensRow.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(0);
+        int oqrRightColumnIndex = obstaclesOnQueensRow.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(n+1);
+        res += (oqrRightColumnIndex-oqrLeftColumnIndex-2);
         
-        //for obstacles on queen's column        
-        List<List<Integer>> oqc = obstacles.stream().filter(a -> a.get(1)==c_q).collect(Collectors.toList());
-        int oqcrd = oqc.stream().mapToInt(a -> a.get(0)).filter(a -> a<r_q).max().orElse(0);
-        int oqcru = oqc.stream().mapToInt(a -> a.get(0)).filter(a -> a>r_q).min().orElse(n+1);
-        res += (oqcru-oqcrd-2);
+        //for obstacles on queen's column (OQC)
+        List<List<Integer>> obstaclesOnQueensColumn = obstacles.stream().filter(a -> a.get(1)==c_q).collect(Collectors.toList());
+        int oqcDownRowIndex = obstaclesOnQueensColumn.stream().mapToInt(a -> a.get(0)).filter(a -> a<r_q).max().orElse(0);
+        int oqcUpRowIndex = obstaclesOnQueensColumn.stream().mapToInt(a -> a.get(0)).filter(a -> a>r_q).min().orElse(n+1);
+        res += (oqcUpRowIndex-oqcDownRowIndex-2);
                         
-        //for obstacles on queen's general diagonal
-        int generalDiagonalConstant = r_q-c_q;
+        //for obstacles on queen's general diagonal (OQGD)
         List<List<Integer>> oqgd = obstacles.stream().filter(a -> (c_q-a.get(1))==(r_q-a.get(0))).collect(Collectors.toList());
-        int oqgdcl = oqgd.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(generalDiagonalConstant>0?0:(-1*generalDiagonalConstant));
-        int oqgdcr = oqgd.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(generalDiagonalConstant>0?(n+1-generalDiagonalConstant):(n+1));
-        res += (oqgdcr-oqgdcl-2);
+        int oqgdLeftColumnIndex = oqgd.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(c_q-Math.min(c_q-1, r_q-1)-1);
+        int oqgdRightColumnIndex = oqgd.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(c_q+Math.min(n-c_q, n-r_q)+1);
+        res += (oqgdRightColumnIndex-oqgdLeftColumnIndex-2);
         
-        //for obstacles on queen's other diagonal
-        int otherDiagonalConstant = c_q+r_q;
-        List<List<Integer>> oqod = obstacles.stream().filter(a -> (c_q-a.get(1))==(-1*(r_q-a.get(0)))).collect(Collectors.toList());
-        int oqodcl = oqod.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(otherDiagonalConstant<n+1?0:otherDiagonalConstant-n-1);
-        System.out.println(oqodcl);
-        int oqodcr = oqod.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(otherDiagonalConstant<n+1?otherDiagonalConstant:n+1);
-        res += (oqodcr-oqodcl-2);
+        //for obstacles on queen's other diagonal (OQOD)
+        List<List<Integer>> oqod = obstacles.stream().filter(a -> (c_q-a.get(1))==(-(r_q-a.get(0)))).collect(Collectors.toList());
+        int oqodLeftColumnIndex = oqod.stream().mapToInt(a -> a.get(1)).filter(a -> a<c_q).max().orElse(c_q-Math.min(c_q-1, n-r_q)-1);
+        int oqodRightColumnIndex = oqod.stream().mapToInt(a -> a.get(1)).filter(a -> a>c_q).min().orElse(c_q+Math.min(r_q-1, n-c_q)+1);
+        res += (oqodRightColumnIndex-oqodLeftColumnIndex-2);
         
         return res;
     }
