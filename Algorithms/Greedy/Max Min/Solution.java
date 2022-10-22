@@ -23,10 +23,10 @@ class Result {
 
     public static int maxMin(int k, List<Integer> arr) {
     // Write your code here
-        List<Integer> sortedArr = arr.stream().sorted().collect(Collectors.toList());
+        Collections.sort(arr);
         int min = Integer.MAX_VALUE;
         for(int i=0, j=k-1; j<arr.size(); i++, j++){
-            min = Math.min(sortedArr.get(j)-sortedArr.get(i), min);
+            min = Math.min(arr.get(j)-arr.get(i), min);
         }
         return min;
     }
